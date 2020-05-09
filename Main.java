@@ -1,4 +1,4 @@
-package dz;
+ppackage dz;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -66,6 +66,7 @@ public class Main {
         field[y][x] = DOT_AI;
     }
 
+
     private static boolean isFieldFull() {
         for(int y = 0; y < fieldSyzeY; y++){
             for(int x = 0; x < fieldSyzeX; x++){
@@ -78,37 +79,39 @@ public class Main {
     private static boolean checkWin(char c) {
         for(int a = 0; a <= fieldSyzeY - block; a++) {
             for(int b = 0; b <= fieldSyzeX - block; b++) {
-                if(diagonalWin(c, a, b) || blockWin(c, a, b)) return  true;
+                if(diagonalWin(c, a, b) || lineWin(c, a, b)) return  true;
             }
         }
         return false;
     }
+
+    private static boolean lineWin(char c, int a, int b) {
+        boolean LineY;
+        boolean LineX;
+        for (int y = a; y < block + a; y++) {
+            LineY = true;
+            LineX = true;
+            for (int x = b; x < block + b; x++) {
+                LineY &= (field[y][x] == c);
+                LineX &= (field[x][y] == c);
+            }
+            if
+            (LineY || LineX) return true;
+        }
+        return false;
+    }
+
 
     private static boolean diagonalWin(char c, int a, int b) {
-        boolean diagonal1 = true, diagonal2 = true;
-        for (int y = a; y < block + a; y++) {
-            for (int x = b; x < block + b; x++) {
-                diagonal1 &= (field[y][x] == c);
-                diagonal2 &= (field[block - y][x] == c);
-            }
-            if (diagonal1 || diagonal2) return true;
-        }
-        return false;
-    }
-
-    private static boolean blockWin(char c, int a, int b) {
-        boolean blockY = true;
-        boolean blockX = true;
+        boolean diagonal1, diagonal2;
+        diagonal1 = true;
+        diagonal2 = true;
         for(int y = a; y < block + a; y++) {
-            for (int x = b; x < block + b; x++) {
-                blockY &= (field[y][x] == c);
-                blockX &= (field[x][y] == c);
-            }
-            if (blockY || blockX) return true;
-        }
+            diagonal1 &= (field[y][y - a + b] == c);
+            diagonal2 &= (field[block - y + a - b][y] == c);
+        } if (diagonal1 || diagonal2) return true;
         return false;
     }
-
 
     public static void main(String[] args) {
         initField();
@@ -137,5 +140,3 @@ public class Main {
         }
     }
 }
-
-
